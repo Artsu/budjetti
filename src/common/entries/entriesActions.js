@@ -16,7 +16,11 @@ const addEntries = (entries) => {
 
     await dispatch({
       type: ADD_ENTRIES,
-      payload: entriesWithIds.filter(entry => getState().entries.selectedMonth === DateTime.fromJSDate(entry.date).month),
+      payload: entriesWithIds.filter(entry => {
+        const selectedDate = DateTime.fromJSDate(getState().entries.selectedMonth)
+        const entryDateTime = DateTime.fromJSDate(entry.date)
+        return selectedDate.hasSame(entryDateTime, 'month') && entryDateTime.hasSame(entryDateTime, 'year')
+      })
     })
     await dispatch({
       type: HILIGHT_ENTRIES,
