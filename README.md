@@ -2,9 +2,9 @@
 
 ![OP Demo](images/OPDemo.gif "OP Demo")
 
-Personal budgetting with easy copy-paste rows from few selected web banks (Currently OP, Nordea planned). 
+Personal budgetting with easy copy-pasting rows from a few selected online bank services (Currently OP, Nordea planned). 
 
-We use IndexedDb to remove the need for backend completely to have all user data in their own machines only.
+IndexedDb is used to remove the need for backend completely to have all user data in their own machines only.
 
 Service in Finnish only, sorry. 
 
