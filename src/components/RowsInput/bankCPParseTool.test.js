@@ -137,3 +137,42 @@ test('parses OP data with income', () => {
   expect(parsedEntries[1].transceiver).toBe('COMPANY INC')
   expect(parsedEntries[1].amount).toBe(123.01)
 })
+
+test('parses OP data with switching year', () => {
+  const testData = `
+    ke 3.1.
+
+    K supermarket Ruoka
+    -6,67
+    ma 1.1.
+
+    K supermarket Ruoka
+    -15,41
+    joulukuu 2017
+    Tulot ja menot +999,99
+    pe 28.12.
+
+    Ravintola Helsinki
+    -2,50
+    to 27.12.
+
+    RAVINTOLA HELSINKI
+    -0,80
+
+  `
+
+  const parsedEntries = parseOPCopyPaste(testData)
+  expect(parsedEntries.length).toBe(4)
+
+  expect(parsedEntries[0].transceiver).toBe('K supermarket Ruoka')
+  expect(parsedEntries[0].amount).toBe(-6.67)
+  let date = DateTime.fromJSDate(parsedEntries[0].date)
+  expect(date.toFormat('yyyy-MM-dd')).toBe('2018-01-03')
+  expect(parsedEntries[0].message).toBeUndefined()
+
+  expect(parsedEntries[3].transceiver).toBe('RAVINTOLA HELSINKI')
+  expect(parsedEntries[3].amount).toBe(-0.8)
+  date = DateTime.fromJSDate(parsedEntries[3].date)
+  expect(date.toFormat('yyyy-MM-dd')).toBe('2017-12-27')
+  expect(parsedEntries[3].message).toBeUndefined()
+})

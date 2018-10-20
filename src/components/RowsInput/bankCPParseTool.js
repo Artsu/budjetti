@@ -9,7 +9,7 @@ export function parseOPCopyPaste(OPInput) {
 
   const entries = []
 
-  let year = null
+  let year = DateTime.utc().toFormat('yyyy')
   let date = null
   let entry = {}
   let skipNext = false
@@ -32,7 +32,7 @@ export function parseOPCopyPaste(OPInput) {
 
     if (row.match(DATE_REGEX)) {
       addEntry()
-      date = DateTime.fromFormat(row.substr(3), 'd.M.').toJSDate()
+      date = DateTime.fromFormat(`${row.substr(3)}${year}`, 'd.M.yyyy').toJSDate()
       return
     }
 
