@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import RowsInput from '../../components/RowsInput/RowsInputContainer'
 import ExpensesTable from '../../components/ExpensesTable/ExpensesTable'
 import ColoredAmount from '../../components/ColoredAmount/ColoredAmount'
+import NewEntryInputGroup from '../../components/NewEntryInputGroup/NewEntryInputGroupContainer'
 import MonthSelection from '../../components/MonthSelection/MonthSelectionContainer'
 export default class ExpensesAndIncome extends Component {
 
@@ -26,6 +27,7 @@ export default class ExpensesAndIncome extends Component {
     return <div>
       <RowsInput/>
       <MonthSelection />
+      <NewEntryInputGroup />
       <ExpensesTable entries={this.props.entries} deleteEntry={this.props.deleteEntry} />
       <div>
         Arvio kuukauden menoista: <ColoredAmount value={expenses}/>€<br/>
