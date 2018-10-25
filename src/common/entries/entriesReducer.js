@@ -31,7 +31,7 @@ export default (state = defaultState, action) => {
     case UPDATE_ENTRY:
       const newState = cloneDeep(state)
       const updatedItemIndex = newState.items.findIndex(item => item.id === payload.id)
-      newState.items[updatedItemIndex].category = payload.category
+      newState.items[updatedItemIndex] = payload
       return newState
   }
 

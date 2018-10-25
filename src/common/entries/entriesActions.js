@@ -57,7 +57,7 @@ const deleteEntry = (id) => {
   }
 }
 
-const saveCategory = (payload) => {
+const updateCategory = (payload) => {
   return async (dispatch) => {
     const {id, category} = payload
     const entry = await entriesDB.get(id)
@@ -71,9 +71,23 @@ const saveCategory = (payload) => {
   }
 }
 
+const updateDate = (id, date) => {
+  return async (dispatch) => {
+    const entry = await entriesDB.get(id)
+    entry.date = date
+    await entriesDB.set(id, entry)
+
+    await dispatch({
+      type: UPDATE_ENTRY,
+      payload: {id, ...entry},
+    })
+  }
+}
+
 export {
   addEntries,
   loadEntriesForAMonth,
   deleteEntry,
-  saveCategory,
+  updateCategory,
+  updateDate,
 }

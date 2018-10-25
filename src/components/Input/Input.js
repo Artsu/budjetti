@@ -6,11 +6,16 @@ export default class Input extends Component {
     validate: () => false,
     onChange: () => {},
     submitError: false,
+    isSmall: false,
   }
 
-  state = {
-    error: false,
-    value: '',
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      error: false,
+      value: this.props.value || '',
+    }
   }
 
   isValid = () => {
@@ -48,6 +53,7 @@ export default class Input extends Component {
     return <div className={classnames('control has-icons-right', this.props.className)}>
       <input
         className={classnames('input', {
+          'is-small': this.props.isSmall,
           'is-danger': this.hasError(),
           'is-success': this.isValid()
         })}

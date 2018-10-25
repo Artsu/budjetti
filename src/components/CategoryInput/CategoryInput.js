@@ -13,10 +13,7 @@ export default class CategoryInput extends Component {
   }
 
   saveCategory = () => {
-    this.props.saveCategory({
-     id: this.props.item.id,
-     category: this.state.value.toLowerCase(),
-    })
+    this.props.saveCategory(this.props.item.id, this.state.value.toLowerCase())
   }
 
   updateValue = (event) => {

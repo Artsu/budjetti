@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import isEmpty from 'lodash/isEmpty'
 import { DateTime } from 'luxon'
 import Input from '../Input/Input'
+import {dateInputValidator, getDateFormat} from '../../common/validators/dateValidator'
 
 const AddNewRowLabel = styled.div`
   font-weight: bold;
@@ -35,7 +36,7 @@ export default class NewEntryInputGroup extends Component {
 
   addEntry = async () => {
     const dateValue = this.date.getValue()
-    const format = this.getDateFormat(dateValue)
+    const format = getDateFormat(dateValue)
     const entry = {
       date: DateTime.fromFormat(dateValue, format).toJSDate(),
       transceiver: this.transceiver.getValue(),
@@ -58,10 +59,6 @@ export default class NewEntryInputGroup extends Component {
     })
   }
 
-  getDateFormat = (value) => {
-    return value.match(/^\d{2}\.\d{2}\.$/) ? 'dd.MM.' : 'dd.MM.yyyy'
-  }
-
   render() {
     return <NewEntryInputGroupContainer>
       <AddNewRowLabel>Lisää uusi rivi:</AddNewRowLabel>
@@ -70,10 +67,7 @@ export default class NewEntryInputGroup extends Component {
           <DateInput
             placeholder="Päivämäärä *"
             as={Input}
-            validate={(value) => {
-              const format = this.getDateFormat(value)
-              return !(DateTime.fromFormat(value, format).isValid || isEmpty(value))
-            }}
+            validate={dateInputValidator}
             ref={dateInput => this.date = dateInput}
             onChange={this.onInputChange}
           />
@@ -110,12 +104,12 @@ export default class NewEntryInputGroup extends Component {
 
         <div className="column is-narrow">
           <p className="is-inline-flex">
-            <a className="button is-link" onClick={this.addEntry} disabled={!this.state.isValid}>
+            <button className="button is-link" onClick={this.addEntry} disabled={!this.state.isValid}>
               <span>Tallenna</span>
               <span className="icon is-small">
                 <i className="fas fa-save" />
               </span>
-            </a>
+            </button>
           </p>
         </div>
       </div>

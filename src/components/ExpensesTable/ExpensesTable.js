@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { DateTime } from 'luxon'
 import ColoredAmount from '../ColoredAmount/ColoredAmount'
 import CategoryInput from '../CategoryInput/CategoryInputContainer'
+import EditableCell from './EditableCell/EditableCell'
 
 import './ExpensesTable.css'
 
@@ -23,6 +24,9 @@ const TdAlignRight = styled.td`
   text-align: right;
 `
 
+const ThDate = styled.th`
+  width: 150px;
+`
 const ThCategory = styled.th`
   width: 150px;
 `
@@ -68,6 +72,11 @@ export default class ExpensesTable extends Component {
   state = {
     verifyDeleteModalKey: false,
     deletedId: null,
+    editMode: {
+      date: null,
+      transceiver: null,
+      amount: null,
+    },
   }
 
   deleteRow = (key) => {
@@ -78,14 +87,20 @@ export default class ExpensesTable extends Component {
     }
   }
 
+  update = (entryId) => {
+    return (value) => {
+      this.props.updateDate(entryId, value)
+    }
+  }
+
   render() {
     return <Fragment>
       <Table className="table is-striped is-bordered is-hoverable">
         <thead>
           <tr>
-            <th>
+            <ThDate>
               Pvm
-            </th>
+            </ThDate>
             <th>
               Saaja
             </th>
@@ -107,9 +122,7 @@ export default class ExpensesTable extends Component {
           {this.props.entries.map(item => {
             const dateTime = DateTime.fromJSDate(item.date).toLocal()
             return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedId === item.id}>
-              <td>
-                {dateTime.toLocaleString()}
-              </td>
+              <EditableCell.Date onSubmit={this.update(item.id)} value={dateTime.toLocaleString()} />
               <td>
                 {item.transceiver}
               </td>

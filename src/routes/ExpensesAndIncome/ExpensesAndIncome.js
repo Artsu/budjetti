@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import RowsInput from '../../components/RowsInput/RowsInputContainer'
-import ExpensesTable from '../../components/ExpensesTable/ExpensesTable'
+import ExpensesTable from '../../components/ExpensesTable/ExpensesTableContainer'
 import ColoredAmount from '../../components/ColoredAmount/ColoredAmount'
 import NewEntryInputGroup from '../../components/NewEntryInputGroup/NewEntryInputGroupContainer'
 import MonthSelection from '../../components/MonthSelection/MonthSelectionContainer'
