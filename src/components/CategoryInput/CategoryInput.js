@@ -23,10 +23,7 @@ export default class CategoryInput extends Component {
   }
 
   clearCategory = () => {
-    this.props.saveCategory({
-      id: this.props.item.id,
-      category: '',
-    })
+    this.props.saveCategory(this.props.item.id, '')
   }
 
   render() {

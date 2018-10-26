@@ -57,29 +57,14 @@ const deleteEntry = (id) => {
   }
 }
 
-const updateCategory = (payload) => {
+const updateEntry = (id, changedValues) => {
   return async (dispatch) => {
-    const {id, category} = payload
-    const entry = await entriesDB.get(id)
-    entry.category = category
+    const entry = {id, ...await entriesDB.get(id), ...changedValues}
     await entriesDB.set(id, entry)
 
     await dispatch({
       type: UPDATE_ENTRY,
-      payload: {id, ...entry},
-    })
-  }
-}
-
-const updateDate = (id, date) => {
-  return async (dispatch) => {
-    const entry = await entriesDB.get(id)
-    entry.date = date
-    await entriesDB.set(id, entry)
-
-    await dispatch({
-      type: UPDATE_ENTRY,
-      payload: {id, ...entry},
+      payload: entry,
     })
   }
 }
@@ -88,6 +73,5 @@ export {
   addEntries,
   loadEntriesForAMonth,
   deleteEntry,
-  updateCategory,
-  updateDate,
+  updateEntry,
 }

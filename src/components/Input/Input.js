@@ -28,7 +28,7 @@ export default class Input extends Component {
 
   updateInput = async (event) => {
     const { value } = event.target
-    const error = this.props.validate(value)
+    const error = !this.props.validate(value)
 
     await this.setState({
       value,

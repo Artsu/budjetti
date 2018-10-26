@@ -7,5 +7,5 @@ export const getDateFormat = (value) => {
 
 export const dateInputValidator = (value) => {
   const format = getDateFormat(value)
-  return !(DateTime.fromFormat(value, format).isValid || isEmpty(value))
+  return (DateTime.fromFormat(value, format).isValid && !isEmpty(value))
 }

@@ -87,7 +87,7 @@ export default class NewEntryInputGroup extends Component {
             as={Input}
             placeholder="Määrä *"
             validate={(value) => {
-              return !(isEmpty(value) || value.match(/^-?\d+(\.\d{1,2})?$/))
+              return value.match(/^-?\d+(\.\d{1,2})?$/)
             }}
             ref={amountInput => this.amount = amountInput}
             onChange={this.onInputChange}

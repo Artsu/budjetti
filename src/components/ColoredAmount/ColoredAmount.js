@@ -14,7 +14,7 @@ const ColoredAmount = styled.span`
   color: ${props => getColorForAmount(props.value)};
   
   ::after {
-    content: '${props => props.value.toFixed(2)}';
+    content: '${props => props.value ? props.value.toFixed(2) : ''}';
   }
 `
 

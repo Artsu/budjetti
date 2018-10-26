@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import ColoredAmount from '../ColoredAmount/ColoredAmount'
 import CategoryInput from '../CategoryInput/CategoryInputContainer'
 import EditableCell from './EditableCell/EditableCell'
+import {getDateFormat} from '../../common/validators/dateValidator'
 
 import './ExpensesTable.css'
 
@@ -87,9 +88,16 @@ export default class ExpensesTable extends Component {
     }
   }
 
-  update = (entryId) => {
-    return (value) => {
-      this.props.updateDate(entryId, value)
+  updateDateForEntry = (entryId) => {
+    return (date) => {
+      const format = getDateFormat(date)
+      this.props.updateDateForEntry(entryId, DateTime.fromFormat(date, format).toJSDate())
+    }
+  }
+
+  updateTransceiverForEntry = (entryId) => {
+    return (transceiver) => {
+      this.props.updateTransceiverForEntry(entryId, transceiver)
     }
   }
 
@@ -122,10 +130,8 @@ export default class ExpensesTable extends Component {
           {this.props.entries.map(item => {
             const dateTime = DateTime.fromJSDate(item.date).toLocal()
             return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedId === item.id}>
-              <EditableCell.Date onSubmit={this.update(item.id)} value={dateTime.toLocaleString()} />
-              <td>
-                {item.transceiver}
-              </td>
+              <EditableCell.Date onSubmit={this.updateDateForEntry(item.id)} value={dateTime.toLocaleString()} />
+              <EditableCell.Transceiver onSubmit={this.updateTransceiverForEntry(item.id)} value={item.transceiver} />
               <td>
                 {
                   <ColoredAmount value={item.amount} />

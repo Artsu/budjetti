@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
-import { DateTime } from 'luxon'
-import {dateInputValidator, getDateFormat} from '../../../common/validators/dateValidator'
+import isEmpty from 'lodash/isEmpty'
+import {dateInputValidator} from '../../../common/validators/dateValidator'
 import Input from '../../Input/Input'
 
 class EditableCell extends Component {
@@ -30,9 +30,7 @@ class EditableCell extends Component {
   save = (event) => {
     event.stopPropagation()
     this.cancelEdit()
-    const value = this.input.getValue()
-    const format = getDateFormat(value)
-    this.props.onSubmit(DateTime.fromFormat(value, format).toJSDate())
+    this.props.onSubmit(this.input.getValue())
   }
 
   checkValidity = () => {
@@ -76,5 +74,12 @@ export default {
       placeholder="Päivämäärä"
       validate={dateInputValidator}
     />
-  }
+  },
+  Transceiver: (props) => {
+    return <EditableCell
+      {...props}
+      placeholder="Saaja / lähettäjä"
+      validate={(value) => !isEmpty(value)}
+    />
+  },
 }
