@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 
-import ExpensesAndIncome from './ExpensesAndIncome'
+import MonthlySummary from './MonthlySummary'
 import {loadEntriesForAMonth} from '../../common/entries/entriesActions'
 
 function mapStateToProps(state) {
   return {
     entries: state.entries.items,
+
   }
 }
 
@@ -15,4 +16,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpensesAndIncome)
+export default connect(mapStateToProps, mapDispatchToProps)(MonthlySummary)

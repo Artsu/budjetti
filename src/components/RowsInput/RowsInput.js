@@ -8,7 +8,6 @@ import OPLogo from '../../assets/op-logo.png'
 import NordeaLogo from '../../assets/nordea-logo.png'
 
 const RowsInputWrapper = styled.div`
-  margin-bottom: 10px;
 `
 const AddRowsToggleButtons = styled.div`
   display: flex;
@@ -92,10 +91,14 @@ export default class RowsInput extends Component {
           <LogoButtonImage src={NordeaLogo} />
         </LogoButton>
       </AddRowsToggleButtons>
-      <hr/>
       <TextAreaToggle isOpen={this.state.openedTextArea}>
         <TextArea className="textarea" onChange={this.handleOnInputChange} placeholder="Liitä rivejä tiliotteesta tähän" />
-        <button className="button" onClick={this.handleSend}>Lisää</button>
+        <button className="button is-link" onClick={this.handleSend}>
+          <span>Lisää</span>
+          <span className="icon is-small">
+            <i className="fas fa-save" />
+          </span>
+        </button>
       </TextAreaToggle>
     </RowsInputWrapper>
   }

@@ -69,6 +69,8 @@ export function parseOPCopyPaste(OPInput) {
   })
   addEntry()
 
+  entries.forEach(entry => entry.account = 'op')
+
   return entries
 }
 
