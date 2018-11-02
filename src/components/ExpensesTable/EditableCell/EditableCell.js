@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
 import isEmpty from 'lodash/isEmpty'
 import {dateInputValidator} from '../../../common/validators/dateValidator'
+import {amountInputValidator} from '../../../common/validators/amountValidator'
 import Input from '../../Input/Input'
+import ColoredAmount from '../../ColoredAmount/ColoredAmount'
 
 class EditableCell extends Component {
   static defaultProps = {
@@ -38,7 +40,9 @@ class EditableCell extends Component {
   }
 
   render() {
-    const displayValue = <span>{this.props.value}</span>
+    const displayValue = this.props.isAmount
+      ? <ColoredAmount value={this.props.value}/>
+      : <span>{this.props.value}</span>
     const editValue = <div className="field has-addons">
       <div className="control">
         <Input
@@ -80,6 +84,14 @@ export default {
       {...props}
       placeholder="Saaja / lähettäjä"
       validate={(value) => !isEmpty(value)}
+    />
+  },
+  Amount: (props) => {
+    return <EditableCell
+      {...props}
+      placeholder="Määrä"
+      validate={amountInputValidator}
+      isAmount
     />
   },
 }

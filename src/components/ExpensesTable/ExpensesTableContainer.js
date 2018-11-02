@@ -7,6 +7,7 @@ function mapDispatchToProps(dispatch) {
   return {
     updateDateForEntry: (id, date) => dispatch(updateEntry(id, {date})),
     updateTransceiverForEntry: (id, transceiver) => dispatch(updateEntry(id, {transceiver})),
+    updateAmountForEntry: (id, amount) => dispatch(updateEntry(id, {amount})),
   }
 }
 

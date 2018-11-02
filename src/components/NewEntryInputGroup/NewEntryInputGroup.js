@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import isEmpty from 'lodash/isEmpty'
 import { DateTime } from 'luxon'
 import Input from '../Input/Input'
 import {dateInputValidator, getDateFormat} from '../../common/validators/dateValidator'
+import {amountInputValidator} from '../../common/validators/amountValidator'
 
 const AddNewRowLabel = styled.div`
   font-weight: bold;
@@ -86,9 +86,7 @@ export default class NewEntryInputGroup extends Component {
           <AmountInput
             as={Input}
             placeholder="Määrä *"
-            validate={(value) => {
-              return value.match(/^-?\d+(\.\d{1,2})?$/)
-            }}
+            validate={amountInputValidator}
             ref={amountInput => this.amount = amountInput}
             onChange={this.onInputChange}
           />

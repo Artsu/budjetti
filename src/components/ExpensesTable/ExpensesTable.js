@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { DateTime } from 'luxon'
-import ColoredAmount from '../ColoredAmount/ColoredAmount'
 import CategoryInput from '../CategoryInput/CategoryInputContainer'
 import EditableCell from './EditableCell/EditableCell'
 import {getDateFormat} from '../../common/validators/dateValidator'
@@ -101,6 +100,12 @@ export default class ExpensesTable extends Component {
     }
   }
 
+  updateAmountForEntry = (entryId) => {
+    return (amount) => {
+      this.props.updateAmountForEntry(entryId, parseFloat(amount))
+    }
+  }
+
   render() {
     return <Fragment>
       <Table className="table is-striped is-bordered is-hoverable">
@@ -132,11 +137,7 @@ export default class ExpensesTable extends Component {
             return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedId === item.id}>
               <EditableCell.Date onSubmit={this.updateDateForEntry(item.id)} value={dateTime.toLocaleString()} />
               <EditableCell.Transceiver onSubmit={this.updateTransceiverForEntry(item.id)} value={item.transceiver} />
-              <td>
-                {
-                  <ColoredAmount value={item.amount} />
-                }
-              </td>
+              <EditableCell.Amount onSubmit={this.updateAmountForEntry(item.id)} value={item.amount} />
               <TdAlignRight>
                 <CategoryInput item={item} />
               </TdAlignRight>
