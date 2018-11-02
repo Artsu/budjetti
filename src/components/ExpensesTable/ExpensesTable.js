@@ -27,6 +27,9 @@ const TdAlignRight = styled.td`
 const ThDate = styled.th`
   width: 150px;
 `
+const ThAmount = styled.th`
+  width: 150px;
+`
 const ThCategory = styled.th`
   width: 150px;
 `
@@ -117,9 +120,9 @@ export default class ExpensesTable extends Component {
             <th>
               Saaja
             </th>
-            <th>
+            <ThAmount>
               Määrä
-            </th>
+            </ThAmount>
             <ThCategory>
               Kategoria
             </ThCategory>

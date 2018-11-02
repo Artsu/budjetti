@@ -1,18 +1,44 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { parseOPCopyPaste } from './bankCPParseTool'
+import Promise from 'bluebird'
+import classnames from 'classnames'
+import { parseOPCopyPaste, parseNordeaCopyPaste } from './bankCPParseTool'
+
+import OPLogo from '../../assets/op-logo.png'
+import NordeaLogo from '../../assets/nordea-logo.png'
 
 const RowsInputWrapper = styled.div`
   margin-bottom: 10px;
+`
+const AddRowsToggleButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+`
+
+const LogoButton = styled.a`
+  margin: 0 5px;
+`
+
+const LogoButtonImage = styled.img`
+  height: 30px;
 `
 
 const TextArea = styled.textarea`
   margin-bottom: 10px;
 `
 
+const TextAreaToggle = styled.div`
+  transition: max-height 0.5s ease-in-out;
+  max-height: ${props => props.isOpen ? '400' : '0'}px;
+  overflow: hidden;
+`
+
 export default class RowsInput extends Component {
   state = {
     value: '',
+    openedTextArea: null,
   }
 
   handleOnInputChange = (event) => {
@@ -20,15 +46,57 @@ export default class RowsInput extends Component {
   }
 
   handleSend = () => {
-    const entries = parseOPCopyPaste(this.state.value)
-    console.log('entries', entries)
+    const entries = []
+    switch (this.state.openedTextArea) {
+      case 'op':
+        entries.push(...parseOPCopyPaste(this.state.value))
+        break
+      case 'nordea':
+        entries.push(...parseNordeaCopyPaste(this.state.value))
+        break
+    }
+
     this.props.addEntries(entries)
+  }
+
+  toggleTextArea = (account) => {
+    return async () => {
+      if (this.state.openedTextArea) {
+        const openState = this.state.openedTextArea
+        await this.setState({openedTextArea: null})
+        if (openState === account) {
+          return
+        }
+
+        await Promise.delay(500)
+      }
+
+      await this.setState({openedTextArea: account})
+    }
   }
 
   render() {
     return <RowsInputWrapper>
-      <TextArea className="textarea" onChange={this.handleOnInputChange} placeholder="Liitä rivejä tiliotteesta tähän" />
-      <button className="button" onClick={this.handleSend}>Lisää</button>
+      <AddRowsToggleButtons>
+        Lisää rivejä:
+        <LogoButton
+          className={classnames('button', {'is-active': this.state.openedTextArea === 'op'})}
+          onClick={this.toggleTextArea('op')}
+        >
+          <LogoButtonImage src={OPLogo} />
+        </LogoButton>
+        <LogoButton
+          className={classnames('button', {'is-active': this.state.openedTextArea === 'nordea'})}
+          onClick={this.toggleTextArea('nordea')}
+        >
+          <LogoButtonImage src={NordeaLogo} />
+        </LogoButton>
+      </AddRowsToggleButtons>
+      <hr/>
+      <TextAreaToggle isOpen={this.state.openedTextArea}>
+        <TextArea className="textarea" onChange={this.handleOnInputChange} placeholder="Liitä rivejä tiliotteesta tähän" />
+        <button className="button" onClick={this.handleSend}>Lisää</button>
+      </TextAreaToggle>
     </RowsInputWrapper>
   }
 }

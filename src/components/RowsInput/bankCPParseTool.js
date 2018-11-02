@@ -71,3 +71,7 @@ export function parseOPCopyPaste(OPInput) {
 
   return entries
 }
+
+export function parseNordeaCopyPaste(NordeaInput) {
+  return []
+}
