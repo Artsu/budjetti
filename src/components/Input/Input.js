@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 export default class Input extends Component {
   static defaultProps = {
-    validate: () => false,
+    validate: () => true,
     onChange: () => {},
     submitError: false,
     isSmall: false,

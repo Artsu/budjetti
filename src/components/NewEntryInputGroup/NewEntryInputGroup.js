@@ -29,6 +29,10 @@ const CategoryInput = styled.input`
   width: 160px;
 `
 
+const AccountInput = styled.input`
+  width: 160px;
+`
+
 export default class NewEntryInputGroup extends Component {
   state = {
     isValid: false,
@@ -42,6 +46,7 @@ export default class NewEntryInputGroup extends Component {
       transceiver: this.transceiver.getValue(),
       amount: parseFloat(this.amount.getValue()),
       category: this.category.getValue(),
+      account: this.account.getValue(),
     }
     this.props.addEntry(entry)
 
@@ -49,6 +54,7 @@ export default class NewEntryInputGroup extends Component {
     this.transceiver.clear()
     this.amount.clear()
     this.category.clear()
+    this.account.clear()
   }
 
   onInputChange = () => {
@@ -97,6 +103,14 @@ export default class NewEntryInputGroup extends Component {
             as={Input}
             placeholder="Kategoria"
             ref={categoryInput => this.category = categoryInput}
+          />
+        </div>
+
+        <div className="column is-narrow">
+          <AccountInput
+            as={Input}
+            placeholder="Tili"
+            ref={accountInput => this.account = accountInput}
           />
         </div>
 
