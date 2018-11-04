@@ -69,7 +69,7 @@ export function parseOPCopyPaste(OPInput) {
   })
   addEntry()
 
-  entries.forEach(entry => entry.account = 'op')
+  entries.forEach(entry => entry.account = 'OP')
 
   return entries
 }
@@ -87,6 +87,7 @@ export function parseNordeaCopyPaste(NordeaInput) {
       date: DateTime.fromFormat(entry[0].trim(), 'dd.MM.yyyy').toJSDate(),
       transceiver: entry[2].trim(),
       amount: parseFloat(amount),
+      account: 'Nordea'
     }
   })
 

@@ -146,7 +146,6 @@ export default class ExpensesTable extends Component {
               </TdAlignRight>
               <TdAlignCenter>
                 {item.account}
-                OP
               </TdAlignCenter>
               <CenteredColumn>
                 <a className="delete" onClick={this.deleteRow(item.id)} />
