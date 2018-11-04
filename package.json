@@ -12,6 +12,7 @@
   "license": "GNU GPLv3",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "bluebird": "^3.5.2",
     "bulma": "^0.7.1",
     "capitalize": "^2.0.0",
@@ -31,19 +32,19 @@
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.0.0-beta.8"
-  },
-  "devDependencies": {
+    "styled-components": "^4.0.0-beta.8",
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@fortawesome/fontawesome-free": "^5.3.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-styled-components": "^1.7.1",
     "parcel-bundler": "^1.10.3"
+  },
+  "devDependencies": {
+
   },
   "jest": {
     "verbose": true
