@@ -10,9 +10,9 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    "babel-plugin-styled-components",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-class-properties",
+    ["babel-plugin-styled-components", {}, "plugin-styled-components"],
+    ["@babel/plugin-proposal-object-rest-spread", {}, "plugin-object-rest"],
+    ["@babel/plugin-proposal-class-properties", {}, "plugin-class-properties"],
     [
       "@babel/plugin-transform-runtime",
       {
@@ -20,7 +20,8 @@
         "helpers": true,
         "regenerator": true,
         "useESModules": false
-      }
+      },
+      "transform-runtime"
     ]
   ]
 }
