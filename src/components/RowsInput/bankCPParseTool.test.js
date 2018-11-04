@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { parseOPCopyPaste } from './bankCPParseTool'
+import {parseNordeaCopyPaste, parseOPCopyPaste} from './bankCPParseTool'
 
 test('parses OP data with current date extra row', () => {
   const testData = `
@@ -175,4 +175,27 @@ test('parses OP data with switching year', () => {
   date = DateTime.fromJSDate(parsedEntries[3].date)
   expect(date.toFormat('yyyy-MM-dd')).toBe('2017-12-27')
   expect(parsedEntries[3].message).toBeUndefined()
+})
+
+
+test('parses Nordea data', () => {
+  const testData = `25.10.2018 	Itsepalvelu 	Test Name 	600,00-
+    25.10.2018 	Pano 	PERSON TO PUT MONEY ON 	1.010,00+
+    22.10.2018 	Pano 	PAYMENT COMPANY REFUND 	19,30+
+    20.10.2018 	e-maksu 	FINNKINO OY 	6,00-`
+
+  const parsedEntries = parseNordeaCopyPaste(testData)
+  expect(parsedEntries.length).toBe(4)
+
+  expect(parsedEntries[0].transceiver).toBe('Test Name')
+  expect(parsedEntries[0].amount).toBe(-600.00)
+  let date = DateTime.fromJSDate(parsedEntries[0].date)
+  expect(date.toFormat('yyyy-MM-dd')).toBe('2018-10-25')
+  expect(parsedEntries[0].message).toBeUndefined()
+
+  expect(parsedEntries[2].transceiver).toBe('PAYMENT COMPANY REFUND')
+  expect(parsedEntries[2].amount).toBe(19.30)
+  date = DateTime.fromJSDate(parsedEntries[2].date)
+  expect(date.toFormat('yyyy-MM-dd')).toBe('2018-10-22')
+  expect(parsedEntries[2].message).toBeUndefined()
 })

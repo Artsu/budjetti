@@ -75,5 +75,20 @@ export function parseOPCopyPaste(OPInput) {
 }
 
 export function parseNordeaCopyPaste(NordeaInput) {
-  return []
+  const unrefinedRows = NordeaInput.split('\n')
+  const entries = unrefinedRows.map(unrefinedRow => {
+    const entry = unrefinedRow.split('\t')
+    const amountWithPlusMinusIndicator = entry[3].replace(',', '.').trim()
+    const indexOfPlusMinusIndicator = amountWithPlusMinusIndicator.length-1
+    const indicator = amountWithPlusMinusIndicator.substring(indexOfPlusMinusIndicator) === '+' ? '' : '-'
+    const amount = `${indicator}${amountWithPlusMinusIndicator.substring(0, indexOfPlusMinusIndicator)}`
+
+    return {
+      date: DateTime.fromFormat(entry[0].trim(), 'dd.MM.yyyy').toJSDate(),
+      transceiver: entry[2].trim(),
+      amount: parseFloat(amount),
+    }
+  })
+
+  return entries
 }

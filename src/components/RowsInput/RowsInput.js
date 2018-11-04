@@ -56,6 +56,8 @@ export default class RowsInput extends Component {
     }
 
     this.props.addEntries(entries)
+    this.setState({value: '', openedTextArea: null})
+    // TODO: Show notification for how many rows were added
   }
 
   toggleTextArea = (account) => {
