@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 
 import ExpensesAndIncome from './ExpensesAndIncome'
 import {loadEntriesForAMonth} from '../../common/entries/entriesActions'
+import {loadCategoriesFromDb} from '../../common/categories/categoriesActions'
 
 function mapStateToProps(state) {
   return {
@@ -12,6 +13,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadEntriesForAMonth: (month) => dispatch(loadEntriesForAMonth(month)),
+    loadCategories: () => dispatch(loadCategoriesFromDb()),
   }
 }
 

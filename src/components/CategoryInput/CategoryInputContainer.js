@@ -2,11 +2,19 @@ import { connect } from 'react-redux'
 
 import CategoryInput from './CategoryInput'
 import {updateEntry} from '../../common/entries/entriesActions'
+import {addOrUpdateCategory} from '../../common/categories/categoriesActions'
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
   return {
-    saveCategory: (id, category) => dispatch(updateEntry(id, {category})),
+    categories: state.categories.defaultTransceiverCategories
   }
 }
 
-export default connect(null, mapDispatchToProps)(CategoryInput)
+function mapDispatchToProps(dispatch) {
+  return {
+    updateEntryCategory: (id, category) => dispatch(updateEntry(id, {category})),
+    saveCategory: (category) => dispatch(addOrUpdateCategory(category)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryInput)

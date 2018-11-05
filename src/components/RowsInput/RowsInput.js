@@ -55,7 +55,15 @@ export default class RowsInput extends Component {
         break
     }
 
-    this.props.addEntries(entries)
+    const entriesWithDefaultCategories = entries.map(entry => {
+      const defaultCategory = this.props.categories.find(c => c.transceiver === entry.transceiver)
+      if (defaultCategory) {
+        entry.category =  defaultCategory.category
+      }
+      return entry
+    })
+
+    this.props.addEntries(entriesWithDefaultCategories)
     this.setState({value: '', openedTextArea: null})
     // TODO: Show notification for how many rows were added
   }

@@ -13,7 +13,19 @@ export default class CategoryInput extends Component {
   }
 
   saveCategory = () => {
-    this.props.saveCategory(this.props.item.id, this.state.value.toLowerCase())
+    const entry = this.props.item
+    this.props.updateEntryCategory(entry.id, this.state.value.toLowerCase())
+
+    const transceiverHasDefaultCategory = this.props.categories.find(category => category.transceiver === entry.transceiver)
+    if (!transceiverHasDefaultCategory) {
+      this.props.saveCategory({
+        transceiver: entry.transceiver,
+        category: this.state.value.toLowerCase(),
+      })
+    }
+    this.setState({
+      value: '',
+    })
   }
 
   updateValue = (event) => {
@@ -23,7 +35,7 @@ export default class CategoryInput extends Component {
   }
 
   clearCategory = () => {
-    this.props.saveCategory(this.props.item.id, '')
+    this.props.updateEntryCategory(this.props.item.id, '')
   }
 
   render() {
