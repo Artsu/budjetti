@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 function getColorForAmount(amount) {
   if (amount > 0) {
-    return 'green'
+    return '#1a845f'
   }
   if (amount < 0) {
-    return 'red'
+    return '#c4505f'
   }
 }
 

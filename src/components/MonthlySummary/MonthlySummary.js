@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import ColoredAmount from '../ColoredAmount/ColoredAmount'
+import MonthlyResultsByCategories from './MonthlyResultsByCategories'
+import MonthlyDashboardGraphs from './MonthlyDashboardGraphs'
 
 const ToggleIcon = styled.span`
   position: absolute;
@@ -15,9 +17,23 @@ const CardContent = styled.div`
 `
 
 const HeadDashboard = styled.div`
+  display: flex;
+`
+
+const MonthlyActualized = styled.div`
   display: grid;
   grid-template-columns: 100px auto;
   width: 200px;
+  max-height: 70px;
+  margin-top: 40px;
+`
+
+const MonthlyBudgetted = styled.div`
+  display: grid;
+  grid-template-columns: 150px auto;
+  width: 250px;
+  max-height: 70px;
+  margin-top: 40px;
 `
 
 const AmountCell = styled.span`
@@ -27,8 +43,13 @@ const AmountCell = styled.span`
 const ExpandableCardContent = styled.div`
   height: auto;
   transition: max-height 0.3s linear;
-  max-height: ${props => props.isExpanded ? '500px' : '0'};
+  max-height: ${props => props.isExpanded ? '1000px' : '0'};
   overflow: hidden;
+`
+
+const VerticalSeparator = styled.div`
+  margin: 0 25px 0 30px;
+  border-left: 1px solid lightgray;
 `
 
 export default class MonthlySummary extends Component {
@@ -60,12 +81,23 @@ export default class MonthlySummary extends Component {
           <i className={classnames('fas fa-2x', this.state.isExpanded ? 'fa-angle-up' : 'fa-angle-down')} />
         </ToggleIcon>
         <HeadDashboard>
-          <strong>Menot:</strong><AmountCell><ColoredAmount value={expenses}/> €</AmountCell>
-          <strong>Tulot:</strong><AmountCell><ColoredAmount value={income}/> €</AmountCell>
-          <strong>Yhteensä:</strong><AmountCell><ColoredAmount value={total}/> €</AmountCell>
+          <MonthlyActualized>
+            <strong>Menot:</strong><AmountCell><ColoredAmount value={expenses}/> €</AmountCell>
+            <strong>Tulot:</strong><AmountCell><ColoredAmount value={income}/> €</AmountCell>
+            <strong>Yhteensä:</strong><AmountCell><ColoredAmount value={total}/> €</AmountCell>
+          </MonthlyActualized>
+          <VerticalSeparator />
+          <MonthlyBudgetted>
+            <strong>Arvio menoista:</strong><AmountCell><ColoredAmount value={expenses}/> €</AmountCell>
+            <strong>Arvio tuloista:</strong><AmountCell><ColoredAmount value={income}/> €</AmountCell>
+            <strong>Arvio yhteensä:</strong><AmountCell><ColoredAmount value={total}/> €</AmountCell>
+          </MonthlyBudgetted>
+          <VerticalSeparator />
+          <MonthlyDashboardGraphs expenses={expenses} income={income} />
         </HeadDashboard>
         <ExpandableCardContent isExpanded={this.state.isExpanded}>
-
+          <hr/>
+          <MonthlyResultsByCategories entries={this.props.entries} />
         </ExpandableCardContent>
       </CardContent>
     </div>
