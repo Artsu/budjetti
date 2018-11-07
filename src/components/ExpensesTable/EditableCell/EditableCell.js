@@ -9,7 +9,8 @@ import ColoredAmount from '../../ColoredAmount/ColoredAmount'
 
 class EditableCell extends Component {
   static defaultProps = {
-    onSubmit: () => {}
+    onSubmit: () => {},
+    textAlign: 'left',
   }
 
   static propTypes = {
@@ -63,7 +64,7 @@ class EditableCell extends Component {
       </div>
     </div>
 
-    return <td onClick={this.startEdit}>
+    return <td style={{textAlign: this.props.textAlign}} onClick={this.startEdit}>
       <OutsideClickHandler onOutsideClick={this.cancelEdit}>
         { this.state.editingOn ? editValue : displayValue }
       </OutsideClickHandler>
@@ -77,6 +78,7 @@ export default {
       {...props}
       placeholder="Päivämäärä"
       validate={dateInputValidator}
+      textAlign="center"
     />
   },
   Transceiver: (props) => {
@@ -84,6 +86,7 @@ export default {
       {...props}
       placeholder="Saaja / lähettäjä"
       validate={(value) => !isEmpty(value)}
+      textAlign="right"
     />
   },
   Amount: (props) => {
@@ -92,6 +95,7 @@ export default {
       placeholder="Määrä"
       validate={amountInputValidator}
       isAmount
+      textAlign="right"
     />
   },
 }

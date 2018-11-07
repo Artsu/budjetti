@@ -102,7 +102,12 @@ export default class RowsInput extends Component {
         </LogoButton>
       </AddRowsToggleButtons>
       <TextAreaToggle isOpen={this.state.openedTextArea}>
-        <TextArea className="textarea" onChange={this.handleOnInputChange} placeholder="Liitä rivejä tiliotteesta tähän" />
+        <TextArea
+          className="textarea"
+          value={this.state.value}
+          onChange={this.handleOnInputChange}
+          placeholder="Liitä rivejä tiliotteesta tähän"
+        />
         <button className="button is-link" onClick={this.handleSend}>
           <span>Lisää</span>
           <span className="icon is-small">

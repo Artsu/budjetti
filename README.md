@@ -13,4 +13,4 @@ Service in Finnish only, sorry.
 ## Development
 
 - Run `npm install`
-- Run `npm start`
+- Run `npm run dev`

@@ -25,13 +25,19 @@ const TdAlignRight = styled.td`
 `
 
 const ThDate = styled.th`
-  width: 150px;
+  width: 130px;
 `
 const ThAmount = styled.th`
-  width: 150px;
+  width: 130px;
 `
 const ThCategory = styled.th`
-  width: 150px;
+  width: 200px;
+`
+const ThAccount = styled.th`
+  width: 130px;
+`
+const ThRemove = styled.th`
+  width: 50px;
 `
 
 const EntryRow = styled.tr`
@@ -126,19 +132,19 @@ export default class ExpensesTable extends Component {
             <ThCategory>
               Kategoria
             </ThCategory>
-            <th>
+            <ThAccount>
               Tili
-            </th>
-            <th className="centered">
+            </ThAccount>
+            <ThRemove className="centered">
               Poista
-            </th>
+            </ThRemove>
           </tr>
         </thead>
         <tbody>
           {this.props.entries.map(item => {
             const dateTime = DateTime.fromJSDate(item.date).toLocal()
             return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedId === item.id}>
-              <EditableCell.Date onSubmit={this.updateDateForEntry(item.id)} value={dateTime.toLocaleString()} />
+              <EditableCell.Date onSubmit={this.updateDateForEntry(item.id)} value={dateTime.toFormat('dd.MM.yyyy')} />
               <EditableCell.Transceiver onSubmit={this.updateTransceiverForEntry(item.id)} value={item.transceiver} />
               <EditableCell.Amount onSubmit={this.updateAmountForEntry(item.id)} value={item.amount} />
               <TdAlignRight>
