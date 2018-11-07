@@ -1,12 +1,18 @@
 import React, {Component} from 'react'
 import Chart from 'chart.js'
 import styled from 'styled-components'
-import orderBy from 'lodash/orderBy'
+import compose from 'lodash/fp/flowRight'
+import filter from 'lodash/fp/filter'
+import map from 'lodash/fp/map'
+import orderBy from 'lodash/fp/orderBy'
+import capitalize from 'capitalize'
 
 const MonthlyDashboardGraphsContainer = styled.div`
   position: relative;
   height: ${props => props.rowCount * 50}px;
   min-height: 100px;
+  width: 50%;
+  margin-bottom: 45px;
 `
 
 export default class MonthlyResultsByCategories extends Component {
@@ -20,20 +26,30 @@ export default class MonthlyResultsByCategories extends Component {
     }
   }
 
-
   calculateCategoryTotals = (entries) => {
     const monthlyCategoryResults = {}
     entries.forEach(entry => {
       const category = entry.category || 'muu'
       if (monthlyCategoryResults[category]) {
-        monthlyCategoryResults[category] += Math.abs(entry.amount)
+        monthlyCategoryResults[category] += entry.amount
       } else {
-        monthlyCategoryResults[category] = Math.abs(entry.amount)
+        monthlyCategoryResults[category] = entry.amount
       }
     })
     const categories = Object.keys(monthlyCategoryResults)
-    const unorderedCategoryAmountMap = categories.map(category => ({category, amount: monthlyCategoryResults[category]}))
-    return orderBy(unorderedCategoryAmountMap, categoryAmount => categoryAmount.amount, ['desc'])
+    return compose(
+      orderBy(categoryAmount => parseFloat(categoryAmount.amount), ['desc']),
+      filter(c => c),
+      map(category => {
+        const amount = monthlyCategoryResults[category]
+        if (amount < 0) {
+          return {
+            category: capitalize(category),
+            amount: Math.abs(amount).toFixed(2),
+          }
+        }
+      }),
+    )(categories)
   }
 
   async componentDidMount() {
@@ -69,6 +85,7 @@ export default class MonthlyResultsByCategories extends Component {
             ticks: {
               fontSize: 16,
             },
+            stacked: true,
             barThickness: 20,
           }],
           xAxes: [{
@@ -92,7 +109,8 @@ export default class MonthlyResultsByCategories extends Component {
 
   async componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.entries) !== JSON.stringify(this.props.entries)) {
-      const expensesCategoryTotals = this.calculateCategoryTotals(nextProps.entries.filter(entry => entry.amount < 0))
+      const expensesCategoryTotals = this.calculateCategoryTotals(nextProps.entries)
+      console.log('expensesCategoryTotals', expensesCategoryTotals)
       await this.setState({categoryTotalsCount: expensesCategoryTotals.length})
       this.chart.data.labels = expensesCategoryTotals.map(c => c.category)
       this.chart.data.datasets[0].data = expensesCategoryTotals.map(c => c.amount)
@@ -102,6 +120,7 @@ export default class MonthlyResultsByCategories extends Component {
 
   render() {
     return <MonthlyDashboardGraphsContainer rowCount={this.state.categoryTotalsCount}>
+      <h2 className="subtitle">Kuukauden menot kategorioittain</h2>
       <canvas ref={this.container} />
     </MonthlyDashboardGraphsContainer>
   }
