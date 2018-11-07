@@ -98,4 +98,11 @@ export default {
       textAlign="right"
     />
   },
+  Category: (props) => {
+    return <EditableCell
+      {...props}
+      placeholder="Kategoria"
+      validate={(value) => !isEmpty(value)}
+    />
+  },
 }
