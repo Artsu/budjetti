@@ -4,23 +4,33 @@ import {
   SET_BUDGET_FOR_CATEGORY,
 } from '../constants'
 
-const defaultState = []
+const defaultState = {
+  monthly: [],
+  repeating: [],
+}
 
 export default (state = defaultState, action) => {
   const { payload } = action
 
+  let newState
   switch (action.type) {
     case (RECEIVE_BUDGET):
-      return payload
-    case (SET_BUDGET_FOR_CATEGORY):
-      const newState = [...state]
-      const categoryIndex = newState.findIndex(budgetEntry => budgetEntry.category === payload.category)
-      if (categoryIndex >= 0) {
-        newState[categoryIndex] = payload
-      } else {
-        newState.push(payload)
-      }
+      const {key, budget} = payload
+      newState = {...state}
+      newState[key] = budget
       return newState
+
+    // case (SET_BUDGET_FOR_CATEGORY): {
+    //   newState = [...state]
+    //   const {key, categoryBudget} = payload
+    //   const categoryIndex = newState[key].findIndex(budgetEntry => budgetEntry.category === categoryBudget.category)
+    //   if (categoryIndex >= 0) {
+    //     newState[key][categoryIndex] = payload
+    //   } else {
+    //     newState[key].push(payload)
+    //   }
+    //   return newState
+    // }
   }
 
   return state

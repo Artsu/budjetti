@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { DateTime } from 'luxon'
 import CategoryInput from '../CategoryInput/CategoryInputContainer'
-import EditableCell from './EditableCell/EditableCell'
+import EditableCell from '../EditableCell/EditableCell'
 import {getDateFormat} from '../../common/validators/dateValidator'
 
 import './ExpensesTable.css'

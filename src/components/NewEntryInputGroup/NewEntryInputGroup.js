@@ -38,7 +38,7 @@ export default class NewEntryInputGroup extends Component {
     isValid: false,
   }
 
-  addEntry = async () => {
+  addEntry = () => {
     const dateValue = this.date.getValue()
     const format = getDateFormat(dateValue)
     const entry = {

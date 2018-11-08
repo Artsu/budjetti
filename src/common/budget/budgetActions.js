@@ -1,28 +1,45 @@
-import {RECEIVE_BUDGET, SET_BUDGET_FOR_CATEGORY} from '../constants'
+import {
+  REPEATING_BUDGET_KEY,
+  MONTHLY_BUDGET_KEY,
+  RECEIVE_BUDGET,
+} from '../constants'
 import budgetDb from './budgetDb'
 
-const loadBudgetFromDb = () => {
+const loadBudgetWithKey = (key) => {
   return async (dispatch) => {
-    const budget = await budgetDb.getAll()
+    const budget = await budgetDb.get(key) || {key, budget: []}
     dispatch({
       type: RECEIVE_BUDGET,
-      payload: budget,
+      payload: {
+        key: key === REPEATING_BUDGET_KEY ? REPEATING_BUDGET_KEY : MONTHLY_BUDGET_KEY,
+        budget: budget.budget,
+      },
     })
   }
 }
 
-const addOrUpdateBudgetForCategory = (budgetForCategory) => {
-  return async (dispatch) => {
-    await budgetDb.set(budgetForCategory)
+const addOrUpdateBudgetForCategory = (key, categoryBudget) => {
+  return async (dispatch, getState) => {
+    const budget = [...getState().budget[key]]
+    const categoryIndex = budget.findIndex(budgetEntry => budgetEntry.category === categoryBudget.category)
+    if (categoryIndex >= 0) {
+      budget[categoryIndex] = categoryBudget
+    } else {
+      budget.push(categoryBudget)
+    }
+    await budgetDb.set({key, budget})
 
     dispatch({
-      type: SET_BUDGET_FOR_CATEGORY,
-      payload: budgetForCategory,
+      type: RECEIVE_BUDGET,
+      payload: {
+        key: key === REPEATING_BUDGET_KEY ? REPEATING_BUDGET_KEY : MONTHLY_BUDGET_KEY,
+        budget,
+      },
     })
   }
 }
 
 export {
-  loadBudgetFromDb,
+  loadBudgetWithKey,
   addOrUpdateBudgetForCategory,
 }

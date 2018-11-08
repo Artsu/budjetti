@@ -3,7 +3,7 @@ import idb from 'idb'
 const DB_NAME = 'budget'
 
 const dbPromise = Promise.resolve(idb.open('budget-store', 1, upgradeDB => {
-  upgradeDB.createObjectStore(DB_NAME, {keyPath: 'category'})
+  upgradeDB.createObjectStore(DB_NAME, {keyPath: 'key'})
 }))
 
 export default {

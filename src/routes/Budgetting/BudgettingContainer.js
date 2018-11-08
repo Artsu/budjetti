@@ -1,17 +1,20 @@
 import { connect } from 'react-redux'
 
 import Budgetting from './Budgetting'
-import {loadBudgetFromDb} from '../../common/budget/budgetActions'
+import {loadBudgetWithKey} from '../../common/budget/budgetActions'
+import {REPEATING_BUDGET_KEY} from '../../common/constants'
 
 function mapStateToProps(state) {
   return {
-    budget: state.budget,
+    monthlyBudget: state.budget.monthly,
+    repeatingBudget: state.budget.repeating,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadBudget: () => dispatch(loadBudgetFromDb()),
+    loadBudgetForMonth: (month) => dispatch(loadBudgetWithKey(month)),
+    loadRepeatingBudget: () => dispatch(loadBudgetWithKey(REPEATING_BUDGET_KEY)),
   }
 }
 
