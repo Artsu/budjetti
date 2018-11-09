@@ -1,8 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import EditableCell from '../EditableCell/EditableCell'
 import styled from 'styled-components'
-import DateTime from 'luxon/src/datetime'
-import ReactDOM from 'react-dom'
+import VerifyModal from '../Modal/VerifyModal'
 
 const CenteredColumn = styled.td`
   text-align: center;
@@ -25,36 +24,10 @@ const BudgetRow = styled.tr`
   visibility: ${props => props.deleted ? 'collapse' : 'visible'};
 `
 
-const RemoveRowVerifyModal = (props) => {
-  const { itemToRemove = {}} = props
-  const dateTime = itemToRemove.date && DateTime.fromJSDate(itemToRemove.date).toLocal()
-  const label = `${dateTime && dateTime.toLocaleString()} | ${itemToRemove.transceiver} | ${itemToRemove.amount && itemToRemove.amount.toFixed(2)}€`
-
-  return ReactDOM.createPortal(
-    <div className={'modal ' + (props.show && 'is-active')}>
-      <div className="modal-background" />
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <p className="modal-card-title">Haluatko varmasti poistaa rivin?</p>
-        </header>
-
-        <section className="modal-card-body">
-          {label}
-        </section>
-
-        <footer className="modal-card-foot">
-          <button className="button is-danger" onClick={() => props.delete(props.itemToRemove.id)}>Poista</button>
-          <button className="button" onClick={props.cancel}>Peruuta</button>
-        </footer>
-      </div>
-    </div>,
-    window.document.querySelector('body')
-  )
-}
-
 export default class BudgettingTable extends Component {
 
   state = {
+    deletedCategory: null,
     verifyDeleteModalKey: null,
   }
 
@@ -72,11 +45,23 @@ export default class BudgettingTable extends Component {
     }
   }
 
+  verifyDeleteRow = (category) => {
+    return () => {
+      this.setState({
+        verifyDeleteModalKey: category,
+      })
+    }
+  }
+
   deleteRow = (category) => {
-    return () => {}
+    this.setState({
+      deletedCategory: category,
+      verifyDeleteModalKey: false,
+    })
   }
 
   render() {
+    const categoryBudgetToRemove = this.props.rows.find(budget => budget.category === this.state.verifyDeleteModalKey)
     return <Fragment>
       <Table className="table is-bordered">
         <thead>
@@ -98,21 +83,18 @@ export default class BudgettingTable extends Component {
             <EditableCell.Category onSubmit={this.updateCategory(budget.category)} value={budget.category} />
             <EditableCell.Amount onSubmit={this.updateAmount(budget.amount)} value={budget.amount} />
             <CenteredColumn>
-              <a className="delete" onClick={this.deleteRow(budget.category)} />
+              <a className="delete" onClick={this.verifyDeleteRow(budget.category)} />
             </CenteredColumn>
           </BudgetRow>
         })}
         </tbody>
       </Table>
-      <RemoveRowVerifyModal
+      <VerifyModal
+        title="Haluatko varmasti poistaa rivin?"
         show={!!this.state.verifyDeleteModalKey}
-        itemToRemove={this.props.rows.find(budget => budget.category === this.state.verifyDeleteModalKey)}
-        delete={(id) =>{
-          this.props.deleteEntry(id)
-          this.setState({
-            deletedId: id,
-            verifyDeleteModalKey: false,
-          })
+        label={categoryBudgetToRemove && `${categoryBudgetToRemove.category}, ${categoryBudgetToRemove.amount}`}
+        delete={(category) =>{
+          this.deleteRow(category)
         }}
         cancel={() => {this.setState({verifyDeleteModalKey: false})}}
       />

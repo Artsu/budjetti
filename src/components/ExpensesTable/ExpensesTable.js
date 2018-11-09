@@ -80,7 +80,7 @@ export default class ExpensesTable extends Component {
 
   state = {
     verifyDeleteModalKey: false,
-    deletedId: null,
+    deletedCategory: null,
     editMode: {
       date: null,
       transceiver: null,
@@ -143,7 +143,7 @@ export default class ExpensesTable extends Component {
         <tbody>
           {this.props.entries.map(item => {
             const dateTime = DateTime.fromJSDate(item.date).toLocal()
-            return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedId === item.id}>
+            return <EntryRow key={`${item.id}-${item.transceiver}-${dateTime.toISO()}`} deleted={this.state.deletedCategory === item.id}>
               <EditableCell.Date onSubmit={this.updateDateForEntry(item.id)} value={dateTime.toFormat('dd.MM.yyyy')} />
               <EditableCell.Transceiver onSubmit={this.updateTransceiverForEntry(item.id)} value={item.transceiver} />
               <EditableCell.Amount onSubmit={this.updateAmountForEntry(item.id)} value={item.amount} />
@@ -166,7 +166,7 @@ export default class ExpensesTable extends Component {
         delete={(id) =>{
           this.props.deleteEntry(id)
           this.setState({
-            deletedId: id,
+            deletedCategory: id,
             verifyDeleteModalKey: false,
           })
         }}
