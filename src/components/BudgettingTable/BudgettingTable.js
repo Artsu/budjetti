@@ -33,8 +33,7 @@ export default class BudgettingTable extends Component {
 
   updateCategory = (category) => {
     return (newCategoryName) => {
-      console.log(category)
-      console.log('newCategoryName', newCategoryName)
+      this.props.renameCategory(this.props.budgetKey, category, newCategoryName)
     }
   }
 

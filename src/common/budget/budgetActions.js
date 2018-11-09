@@ -39,7 +39,34 @@ const addOrUpdateBudgetForCategory = (key, categoryBudget) => {
   }
 }
 
+const renameCategory = (key, category, newCategoryName) => {
+  return async (dispatch, getState) => {
+    const budget = [...getState().budget[key]]
+    const categoryIndex = budget.findIndex(budgetEntry => budgetEntry.category === category)
+    if (categoryIndex >= 0) {
+      budget[categoryIndex].category = newCategoryName
+    }
+    await budgetDb.set({key, budget})
+
+    dispatch({
+      type: RECEIVE_BUDGET,
+      payload: {
+        key: key === REPEATING_BUDGET_KEY ? REPEATING_BUDGET_KEY : MONTHLY_BUDGET_KEY,
+        budget,
+      },
+    })
+  }
+}
+
+const deleteBudgetForCategory = (key, category) => {
+  return async (dispatch) => {
+
+  }
+}
+
 export {
   loadBudgetWithKey,
   addOrUpdateBudgetForCategory,
+  renameCategory,
+  deleteBudgetForCategory,
 }
