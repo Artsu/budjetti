@@ -2,7 +2,7 @@ import Promise from 'bluebird'
 import { DateTime } from 'luxon'
 
 import entriesDB from './entriesDb'
-import {ADD_ENTRIES, HILIGHT_ENTRIES, RECEIVE_ENTRIES, SELECT_MONTH, UPDATE_ENTRY} from '../constants'
+import {ADD_ENTRIES, HILIGHT_ENTRIES, RECEIVE_ENTRIES, UPDATE_ENTRY} from '../constants'
 
 const addEntries = (entries) => {
   return async (dispatch, getState) => {
@@ -17,9 +17,8 @@ const addEntries = (entries) => {
     await dispatch({
       type: ADD_ENTRIES,
       payload: entriesWithIds.filter(entry => {
-        const selectedDate = DateTime.fromJSDate(getState().entries.selectedMonth)
         const entryDateTime = DateTime.fromJSDate(entry.date)
-        return selectedDate.hasSame(entryDateTime, 'month') && entryDateTime.hasSame(entryDateTime, 'year')
+        return entryDateTime.toFormat('yyyy/MM') === getState().ui.month
       })
     })
     await dispatch({
@@ -29,21 +28,15 @@ const addEntries = (entries) => {
   }
 }
 
-const loadEntriesForAMonth = (date) => {
+const loadEntriesForAMonth = (month) => {
   return async (dispatch) => {
     const allEntries = await entriesDB.getAll()
 
     await dispatch({
-      type: SELECT_MONTH,
-      payload: date,
-    })
-
-    await dispatch({
       type: RECEIVE_ENTRIES,
       payload: allEntries.filter(entry => {
-        const dateTime = DateTime.fromJSDate(date)
         const entryDateTime = DateTime.fromJSDate(entry.date)
-        return dateTime.hasSame(entryDateTime, 'month') && dateTime.hasSame(entryDateTime, 'year')
+        return entryDateTime.toFormat('yyyy/MM') === month
       }),
     })
   }

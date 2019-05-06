@@ -57,15 +57,16 @@ class MonthSelection extends Component {
   }
 
   selectPrevMonth = () => {
-    this.props.selectMonth(DateTime.fromJSDate(this.props.selectedMonth).minus({month: 1}).toJSDate())
+    this.props.selectMonth(DateTime.fromFormat(this.props.selectedMonth, 'yyyy/MM').minus({month: 1}).toFormat('yyyy/MM'))
   }
 
   selectNextMonth = () => {
-    this.props.selectMonth(DateTime.fromJSDate(this.props.selectedMonth).plus({month: 1}).toJSDate())
+    this.props.selectMonth(DateTime.fromFormat(this.props.selectedMonth, 'yyyy/MM').plus({month: 1}).toFormat('yyyy/MM'))
   }
 
   render() {
-    const monthLabel = MONTHS[parseInt(DateTime.fromJSDate(this.props.selectedMonth).toFormat('M'))]
+    const selectedMonth = DateTime.fromFormat(this.props.selectedMonth, 'yyyy/MM')
+    const monthLabel = MONTHS[parseInt(selectedMonth.toFormat('M'))]
 
     return <MonthSelectionWrapper>
       <div className="field is-grouped is-grouped-centered">
@@ -86,7 +87,7 @@ class MonthSelection extends Component {
                 minDetail="decade"
                 onDrillUp={this.toggleCalendar}
                 locale="fi-FI"
-                value={this.props.selectedMonth}
+                value={selectedMonth.toJSDate()}
                 onClickMonth={this.selectMonth}
               />
             </OutsideClickHandler>

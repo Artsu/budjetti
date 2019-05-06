@@ -4,7 +4,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import {
   ADD_ENTRIES,
   RECEIVE_ENTRIES,
-  SELECT_MONTH,
   HILIGHT_ENTRIES,
   UPDATE_ENTRY,
 } from '../constants'
@@ -12,7 +11,6 @@ import {
 const defaultState = {
   items: [],
   hilightedItems: [],
-  selectedMonth: new Date(),
 }
 
 export default (state = defaultState, action) => {
@@ -24,8 +22,6 @@ export default (state = defaultState, action) => {
       return {...state, items: orderBy(updatedItems, ['date'], ['desc'])}
     case (RECEIVE_ENTRIES):
       return {...state, items: orderBy(payload, ['date'], ['desc'])}
-    case (SELECT_MONTH):
-      return {...state, selectedMonth: payload}
     case HILIGHT_ENTRIES:
       return {...state, hilightedItems: payload}
     case UPDATE_ENTRY:

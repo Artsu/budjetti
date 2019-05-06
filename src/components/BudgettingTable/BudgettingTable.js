@@ -39,8 +39,10 @@ export default class BudgettingTable extends Component {
 
   updateAmount = (category) => {
     return (amount) => {
-      console.log(category)
-      console.log('amount', amount)
+      this.props.updateBudget(this.props.budgetKey, {
+        category,
+        amount: parseFloat(amount),
+      })
     }
   }
 
@@ -53,6 +55,7 @@ export default class BudgettingTable extends Component {
   }
 
   deleteRow = (category) => {
+    this.props.deleteCategoryBudget(this.props.budgetKey, category)
     this.setState({
       deletedCategory: category,
       verifyDeleteModalKey: false,
@@ -69,7 +72,7 @@ export default class BudgettingTable extends Component {
             Kategoria
           </ThCategory>
           <ThAmount>
-            Määrä
+            Budjetti
           </ThAmount>
           <ThRemove className="centered">
             Poista
@@ -80,7 +83,7 @@ export default class BudgettingTable extends Component {
         {this.props.rows.map(budget => {
           return <BudgetRow key={`${budget.category}}`}>
             <EditableCell.Category onSubmit={this.updateCategory(budget.category)} value={budget.category} />
-            <EditableCell.Amount onSubmit={this.updateAmount(budget.amount)} value={budget.amount} />
+            <EditableCell.Amount onSubmit={this.updateAmount(budget.category)} value={budget.amount} />
             <CenteredColumn>
               <a className="delete" onClick={this.verifyDeleteRow(budget.category)} />
             </CenteredColumn>

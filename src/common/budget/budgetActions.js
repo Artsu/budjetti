@@ -59,8 +59,19 @@ const renameCategory = (key, category, newCategoryName) => {
 }
 
 const deleteBudgetForCategory = (key, category) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const budget = [...getState().budget[key]]
+    const categoryIndex = budget.findIndex(budgetEntry => budgetEntry.category === category)
+    budget.splice(categoryIndex, 1)
+    await budgetDb.set({key, budget})
 
+    dispatch({
+      type: RECEIVE_BUDGET,
+      payload: {
+        key: key === REPEATING_BUDGET_KEY ? REPEATING_BUDGET_KEY : MONTHLY_BUDGET_KEY,
+        budget,
+      },
+    })
   }
 }
 

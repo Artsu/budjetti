@@ -6,6 +6,7 @@ import {REPEATING_BUDGET_KEY} from '../../common/constants'
 
 function mapStateToProps(state) {
   return {
+    selectedMonth: state.ui.month,
     monthlyBudget: state.budget.monthly,
     repeatingBudget: state.budget.repeating,
   }
