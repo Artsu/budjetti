@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
 import isEmpty from 'lodash/isEmpty'
-import {dateInputValidator} from '../../../common/validators/dateValidator'
-import {amountInputValidator} from '../../../common/validators/amountValidator'
-import Input from '../../Input/Input'
-import ColoredAmount from '../../ColoredAmount/ColoredAmount'
+import {dateInputValidator} from '../../common/validators/dateValidator'
+import {amountInputValidator} from '../../common/validators/amountValidator'
+import Input from '../Input/Input'
+import ColoredAmount from '../ColoredAmount/ColoredAmount'
 
 class EditableCell extends Component {
   static defaultProps = {
@@ -96,6 +96,13 @@ export default {
       validate={amountInputValidator}
       isAmount
       textAlign="right"
+    />
+  },
+  Category: (props) => {
+    return <EditableCell
+      {...props}
+      placeholder="Kategoria"
+      validate={(value) => !isEmpty(value)}
     />
   },
 }

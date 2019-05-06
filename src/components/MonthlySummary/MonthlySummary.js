@@ -57,8 +57,8 @@ export default class MonthlySummary extends Component {
     isExpanded: false,
   }
 
-  calculateTotal = (filter) => {
-    return this.props.entries.reduce((acc, entry) => {
+  calculateTotal = (entries, filter = () => true) => {
+    return entries.reduce((acc, entry) => {
       if (filter(entry.amount)) {
         return acc + entry.amount
       }
@@ -71,9 +71,13 @@ export default class MonthlySummary extends Component {
   }
 
   render() {
-    const expenses = this.calculateTotal((amount) => amount < 0)
-    const income = this.calculateTotal((amount) => amount > 0)
-    const total = this.calculateTotal(() => true)
+    const expenses = this.calculateTotal(this.props.entries, (amount) => amount < 0)
+    const income = this.calculateTotal(this.props.entries, (amount) => amount > 0)
+    const total = this.calculateTotal(this.props.entries)
+
+    const expensesBudget = this.calculateTotal(this.props.budget, (amount) => amount < 0)
+    const incomeBudget = this.calculateTotal(this.props.budget, (amount) => amount > 0)
+    const totalBudget = this.calculateTotal(this.props.budget)
 
     return <div className="card">
       <CardContent className="card-content">
@@ -88,12 +92,17 @@ export default class MonthlySummary extends Component {
           </MonthlyActualized>
           <VerticalSeparator />
           <MonthlyBudgetted>
-            <strong>Arvio menoista:</strong><AmountCell><ColoredAmount value={expenses}/> €</AmountCell>
-            <strong>Arvio tuloista:</strong><AmountCell><ColoredAmount value={income}/> €</AmountCell>
-            <strong>Arvio yhteensä:</strong><AmountCell><ColoredAmount value={total}/> €</AmountCell>
+            <strong>Arvio menoista:</strong><AmountCell><ColoredAmount value={expensesBudget}/> €</AmountCell>
+            <strong>Arvio tuloista:</strong><AmountCell><ColoredAmount value={incomeBudget}/> €</AmountCell>
+            <strong>Arvio yhteensä:</strong><AmountCell><ColoredAmount value={totalBudget}/> €</AmountCell>
           </MonthlyBudgetted>
           <VerticalSeparator />
-          <MonthlyDashboardGraphs expenses={expenses} income={income} />
+          <MonthlyDashboardGraphs
+            expenses={expenses}
+            income={income}
+            expensesBudget={expensesBudget}
+            incomeBudget={incomeBudget}
+          />
         </HeadDashboard>
         <ExpandableCardContent isExpanded={this.state.isExpanded}>
           <hr/>

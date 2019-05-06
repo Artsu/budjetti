@@ -41,9 +41,10 @@ export default class MonthlyDashboardGraphs extends Component {
     const total = this.props.income + this.props.expenses
     return <ChartContainer>
       <DoughnutChart
-        values={[this.props.expenses.toFixed(2), -2000]}
+        values={[this.props.expenses.toFixed(2), this.props.expensesBudget.toFixed(2)]}
         colors={[
           '#fc657b',
+          '#2de5a6',
         ]}
         labels={[
           'Menot',
@@ -52,9 +53,10 @@ export default class MonthlyDashboardGraphs extends Component {
         title="Menot / arvio"
       />
       <DoughnutChart
-        values={[this.props.income.toFixed(2), 2000]}
+        values={[this.props.income.toFixed(2), this.props.incomeBudget.toFixed(2)]}
         colors={[
           '#2de5a6',
+          '#fc657b',
         ]}
         labels={[
           'Tulot',
