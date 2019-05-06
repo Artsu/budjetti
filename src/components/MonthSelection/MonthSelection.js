@@ -50,7 +50,7 @@ class MonthSelection extends Component {
   }
 
   selectMonth = (value) => {
-    this.props.selectMonth(value)
+    this.props.selectMonth(DateTime.fromJSDate(value).toFormat('yyyy/MM'))
     this.setState({
       calendarIsOpen: !this.state.calendarIsOpen,
     })
