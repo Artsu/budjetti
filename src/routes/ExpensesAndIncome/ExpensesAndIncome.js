@@ -8,8 +8,10 @@ import MonthSelection from '../../components/MonthSelection/MonthSelectionContai
 export default class ExpensesAndIncome extends Component {
 
   async componentDidMount() {
+    this.props.loadBudgetForMonth(this.props.selectedMonth)
+    this.props.loadRepeatingBudget()
     await this.props.loadCategories()
-    await this.props.loadEntriesForAMonth(new Date())
+    await this.props.loadEntriesForAMonth(this.props.selectedMonth)
   }
 
   render() {

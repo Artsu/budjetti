@@ -6,7 +6,7 @@ import {loadEntriesForAMonth} from '../../common/entries/entriesActions'
 function mapStateToProps(state) {
   return {
     entries: state.entries.items,
-
+    budget: [...state.budget.monthly, ...state.budget.repeating],
   }
 }
 
