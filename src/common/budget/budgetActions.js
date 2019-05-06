@@ -20,7 +20,7 @@ const loadBudgetWithKey = (key) => {
 
 const addOrUpdateBudgetForCategory = (key, categoryBudget) => {
   return async (dispatch, getState) => {
-    const budget = [...getState().budget[key]]
+    const budget = [...getState().budget[key === 'repeating' ? 'repeating' : 'monthly']]
     const categoryIndex = budget.findIndex(budgetEntry => budgetEntry.category === categoryBudget.category)
     if (categoryIndex >= 0) {
       budget[categoryIndex] = categoryBudget
