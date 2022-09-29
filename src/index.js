@@ -1,22 +1,24 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import { render } from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux'
-import { Provider } from 'react-redux'
+import React from "react";
+import { render } from "react-dom";
+import thunk from "redux-thunk";
+import { createStore, applyMiddleware, compose } from "redux";
+import { Provider } from "react-redux";
 
+import App from "./App";
+import rootReducer from "./redux/rootReducer";
 
-import rootReducer from './common/rootReducer'
-import App from './App'
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk)),
-)
+);
 
-render(<Provider store={store}>
-  <App />
-</Provider>, document.getElementById('root'))
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root"),
+);
 
 // Hot Module Replacement
 if (module.hot) {

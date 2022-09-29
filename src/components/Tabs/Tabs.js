@@ -1,14 +1,23 @@
-import React from 'react'
-import {withRouter} from 'react-router'
-import {Link} from 'react-router-dom'
-import classnames from 'classnames'
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-export default withRouter((props) => {
-  return <div className="tabs">
-    <ul>
-      <li className={classnames({'is-active': props.history.location.pathname === '/'})}><Link to="/">Tulot ja menot</Link></li>
-      <li className={classnames({'is-active': props.history.location.pathname === '/budget'})}><Link to="/budget">Budjetointi</Link></li>
-      <li className={classnames({'is-active': props.history.location.pathname === '/credit'})}><Link to="/credit">Luottokortit</Link></li>
-    </ul>
-  </div>
-})
+export default () => {
+  const router = useRouter();
+
+  return (
+    <div className="tabs">
+      <ul>
+        <li className={router.pathname === "/" ? "is-active" : ""}>
+          <Link href="/">Tulot ja menot</Link>
+        </li>
+        <li className={router.pathname === "/budjetti" ? "is-active" : ""}>
+          <Link href="/budjetti">Budjetointi</Link>
+        </li>
+        <li className={router.pathname === "/luottokortit" ? "is-active" : ""}>
+          <Link href="/luottokortit">Luottokortit</Link>
+        </li>
+      </ul>
+    </div>
+  );
+};
